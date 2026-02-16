@@ -28,7 +28,7 @@ They are designed for:
                        │
                Slurm Scheduler
                        │
-       ────────────────┴────────────────
+      -----------------------------------
       
       │                                 │
    Delta Cluster                    DeltaAI Cluster

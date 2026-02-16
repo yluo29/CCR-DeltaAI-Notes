@@ -16,6 +16,25 @@ They are designed for:
 
 - Large-scale simulations
 
+## System-Level Architecture Overview
+
+                Users (Researchers)
+                       │
+                 SSH / OnDemand
+                       │
+                ────────────────
+                Login Nodes
+                ────────────────
+                       │
+               Slurm Scheduler
+                       │
+      ┌────────────────┴────────────────┐
+      │                                 │
+   Delta Cluster                    DeltaAI Cluster
+      │                                 │
+CPU + GPU Nodes                 GH200 GPU Nodes
+      │                                 │
+ Shared Parallel File Systems (High-Speed Storage)
 
 
 

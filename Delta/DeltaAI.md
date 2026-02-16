@@ -7,13 +7,13 @@ It Provide advanced CPU + GPU infrastructure and Serve nationwide academic resea
 
 Designed for:
 
-High-performance computing (HPC)
+- High-performance computing (HPC)
 
-AI/ML model training
+- AI/ML model training
 
-GPU-accelerated research
+- GPU-accelerated research
 
-Large-scale simulations
+- Large-scale simulations
 
 
 

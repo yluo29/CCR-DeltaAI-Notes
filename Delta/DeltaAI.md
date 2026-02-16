@@ -3,9 +3,10 @@
 
 Delta and DeltaAI are advanced high-performance computing (HPC) systems operated by National Center for Supercomputing Applications (NCSA) at the University of Illinois Urbana-Champaign
 
-It Provide advanced CPU + GPU infrastructure and Serve nationwide academic research
+They are available to researchers across the United States through the ACCESS allocation program.
+https://allocations.access-ci.org/login
 
-Designed for:
+They are designed for:
 
 - High-performance computing (HPC)
 

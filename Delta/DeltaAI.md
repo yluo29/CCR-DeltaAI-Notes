@@ -17,24 +17,10 @@ They are are powerful computing systems designed for:
 - GPU-accelerated research
 - Large-scale simulations
 
---- 
-
-
-# 2. Delta vs DeltaAI — Hardware Comparison
-
-| Category | Delta | DeltaAI |
-|-----------|--------|----------|
-| Primary Focus | General HPC workloads | Large-scale AI/ML training |
-| Architecture | Heterogeneous | Homogeneous |
-| CPUs | AMD EPYC | NVIDIA Grace (ARM-based) |
-| GPUs | A40, A100, H200, MI100 | H100 (GH200 Grace Hopper) |
-| Node Variety | Multiple node types | Identical node configuration |
-| Best For | Mixed scientific computing | Distributed deep learning |
-
 
 ---
 
-# 3. Delta Architecture
+# 2. Delta Architecture
 
 https://docs.ncsa.illinois.edu/systems/delta/en/latest/user_guide/architecture.html
 
@@ -51,9 +37,9 @@ This flexibility allows researchers to match hardware to workload requirements.
 
 ---
 
-# 4. DeltaAI Architecture
+# 3. DeltaAI Architecture
 
-https://docs.ncsa.illinois.edu/systems/deltaai/en/latest/user-guide/architecture.html#
+https://docs.ncsa.illinois.edu/systems/deltaai/en/latest/user-guide/architecture.html
 
 Delta and DeltaAI share a common HPC design model but differ in hardware architecture and optimization goals. DeltaAI is purpose-built for AI and machine learning.
 
@@ -72,7 +58,7 @@ The GH200 architecture tightly integrates CPU and GPU via NVLink, enabling extre
 ---
 
 
-# 5. How Users Interact with the System: System-Level Architecture Overview
+# 4. How Users Interact with the System: System-Level Architecture Overview
 Both systems follow the same HPC design pattern:
 - All researchers connecting through SSH or Open OnDemand.
 - Delta and DeltaAI each have their own independent login node.
@@ -109,38 +95,56 @@ Separate Home Directory                       Separate Home Directory
 ---
 
 
-# 6. Hands-On Tutorial
+# 5. Hands-On Tutorial
 
-This section walks you through submitting your **first job** on Delta or DeltaAI.
-
-We will:
+This section walks you through submitting your **first job** on Delta or DeltaAI. We will:
 
 Local Computer -> SSH Login -> Login Node -> Submit Job -> Compute Nodes Run Job -> Results Saved -> Download Results  
 
 
----
-## Step 0 - Before Login
+## Step 0 — Before Login
 
 - Approved ACCESS allocation  
 - Registered ACCESS account  
 - SSH public key uploaded  
-- Internet access (VPN may be required)
+- Internet access (VPN is required outside of campus)
 
   
 ## Step 1 — Log In
 
 ```bash
-ssh yourusername@delta.ncsa.illinois.edu
+ssh username@delta.ncsa.illinois.edu
 ```
 
 or
 
 ```bash
-ssh yourusername@deltaai.ncsa.illinois.edu
+ssh username@dtai-login.delta.ncsa.illinois.edu
 ```
 
----
+Replace 'username' with your real account name
 
+After running the command:
+
+- Enter your NCSA password when prompted (the terminal won’t show characters as you type).
+- Complete DUO multi-factor authentication (enter your 6-digit Duo passcode)
+
+Upon successful login, you’ll see a welcome message on the login node.
+```bash
+      ΔΔΔΔΔ    ΔΔΔΔΔΔ   ΔΔ     ΔΔΔΔΔΔ   ΔΔ
+      ΔΔ  ΔΔ   ΔΔ       ΔΔ       ΔΔ    ΔΔΔΔ
+      ΔΔ  ΔΔ   ΔΔΔΔ     ΔΔ       ΔΔ   ΔΔ  ΔΔ
+      ΔΔ  ΔΔ   ΔΔ       ΔΔ       ΔΔ   ΔΔΔΔΔΔ
+      ΔΔΔΔΔ    ΔΔΔΔΔΔ   ΔΔΔΔΔΔ   ΔΔ   ΔΔ  ΔΔ
+```
+or
+```bash
+    ΔΔΔΔΔ    ΔΔΔΔΔΔ   ΔΔ    ΔΔΔΔΔΔ   ΔΔ         ΔΔ    ΔΔΔΔ
+    ΔΔ  ΔΔ   ΔΔ       ΔΔ      ΔΔ    ΔΔΔΔ       ΔΔΔΔ    ΔΔ
+    ΔΔ  ΔΔ   ΔΔΔΔ     ΔΔ      ΔΔ   ΔΔ  ΔΔ     ΔΔ  ΔΔ   ΔΔ
+    ΔΔ  ΔΔ   ΔΔ       ΔΔ      ΔΔ   ΔΔΔΔΔΔ     ΔΔΔΔΔΔ   ΔΔ
+    ΔΔΔΔΔ    ΔΔΔΔΔΔ   ΔΔΔΔΔΔ  ΔΔ   ΔΔ  ΔΔ     ΔΔ  ΔΔ  ΔΔΔΔ
+```
 ## Step 2 — Create a Test Python Script
 
 Create a file:
@@ -157,9 +161,9 @@ print("Hello from Delta!")
 
 Save and exit.
 
----
 
-## Step 3️⃣ — Create a SLURM Script
+
+## Step 3 — Create a SLURM Script
 
 ```bash
 nano job.sh
@@ -172,7 +176,7 @@ Paste:
 #SBATCH --job-name=hello_test
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
-#SBATCH --time=00:05:00
+#SBATCH --time=24:00:00
 #SBATCH --mem=1000
 #SBATCH --output=hello_output.txt
 
@@ -182,9 +186,8 @@ python hello.py
 
 Save and exit.
 
----
 
-## Step 4️⃣ — Submit the Job
+## Step 4 — Submit the Job
 
 ```bash
 sbatch job.sh
@@ -196,9 +199,8 @@ You will see:
 Submitted batch job <job_id>
 ```
 
----
 
-## Step 5️⃣ — Monitor Job
+## Step 5 — Monitor Job
 
 ```bash
 squeue -u yourusername
@@ -218,10 +220,9 @@ Hello from Delta!
 
 🎉 Congratulations — you just ran your first HPC job!
 
----
 
 
-## 🔎 What Happens Behind the Scenes?
+## What Happens Behind the Scenes?
 
 1. You submit a job.
 2. SLURM checks available resources.
@@ -235,41 +236,45 @@ This system allows thousands of users to share the supercomputer efficiently.
 
 ---
 
-# 7. Data Management — Delta/DeltaAI
-
-Managing data efficiently is critical for successful work on Delta/DeltaAI.  
+# 6. Data Management — Delta/DeltaAI
 They provides multiple storage systems optimized for different use cases — from long-term storage to fast temporary space.
 
-## 7.1 Storage Types
+## 6.1 Storage Types
+Each user has a home directory, $HOME, located at /u/$USER. For each project they are assigned to, they will also have access to shared file space under /projects and /work/hdd.
 
 Delta provides several key storage areas:
 
-| Storage Area | Purpose | Typical Use |
-|--------------|---------|-------------|
-| **HOME** | Personal user directory | Store scripts, configs, small data |
-| **PROJECT** | Shared project space | Team data and collaboration |
-| **WORK** | Scratch space | High-speed space for running jobs |
-| **Node-Local SSD** | Local scratch | Ultra fast temporary space per compute node |
+| **File System** | **Path**     | **Quota**                                                                                                | **Snapshots** | **Key Features**                                                                                               |                               |
+| --------------- | ------------ | -------------------------------------------------------------------------------------------------------- | ------------- | -------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| **HOME**        | `/u`         | 90 GB; 500,000 files per user                                                                            | Yes (30 days) | Area for software, scripts, job files, and so on. Not intended as a source or destination for I/O during jobs. |                               |
+| **PROJECTS**    | `/projects`  | 500 GB. Up to 1–25 TB by allocation request. Large requests may have a fee.                              | No/TBA        | Area for shared data for a project, common data sets, software, results, and so on.                            |                               |
+| **WORK – HDD**  | `/work/hdd`  | 1000 GB. Up to 1–100 TB by allocation request. Submit a support request.                                 | No            | Area for computation, largest allocations, where I/O from jobs should occur (your scratch volume).             |                               |
+| **WORK – NVME** | `/work/nvme` | NVME space is available upon request; submit a support request.                                          | No            | Area for computation; NVME is best for lots of small I/O from jobs.                                            |                               |
+| **`/tmp`**      | `/tmp`       | 0.74 TB (CPU) or 1.50 TB (GPU) shared or dedicated depending on node usage by job(s), no quotas in place | No            | Locally attached disk for fast small file I/O.                                          
+
+
+
 
 DeltaAI provides several key storage areas:
 
-| Storage Area | Purpose | Typical Use |
-|--------------|---------|-------------|
-| **HOME** | Personal directory | Scripts, small datasets |
-| **PROJECTS** | Shared project space | Large datasets, model checkpoints |
-| **WORK** | High-speed scratch space | Temporary space during jobs |
-| **Node-Local Storage** | Local fast storage | I/O heavy workloads |
+| **File System** | **Path**     | **Quota**                                                                        | **Snapshots** | **Key Features**                                                                                               |                               |
+| --------------- | ------------ | -------------------------------------------------------------------------------- | ------------- | -------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| **HOME**        | `/u`         | 90 GB; 600,000 files per user                                                    | Yes (30 days) | Area for software, scripts, job files, and so on. Not intended as a source or destination for I/O during jobs. |                               |
+| **PROJECTS**    | `/projects`  | 500 GB. Up to 1–25 TB by allocation request. Large requests may have a fee.      | No            | Area for shared data for a project, common data sets, software, results, and so on.                            |                               |
+| **WORK – HDD**  | `/work/hdd`  | 1000 GB. Up to 1–100 TB by allocation request. Submit a support request.         | No            | Area for computation, largest allocations, where I/O from jobs should occur. Shared between Delta and DeltaAI. |                               |
+| **WORK – NVME** | `/work/nvme` | 1000 GB. Up to 1–100 TB by allocation request; support request.                  | No            | Area for computation; NVME is best for lots of small I/O from jobs. Shared between Delta and DeltaAI.          |                               |
+| **`/tmp`**      | `/tmp`       | 3.9 TB shared or dedicated depending on node usage by job(s), no quotas in place | No            | Locally attached disk for fast small file I/O.                                                                 
 
 
 
-## 7.2 HOME Directory
+## 6.2 HOME Directory
 
 - Personal, persistent space
 - Good for:
   - Scripts
   - Small datasets
   - Configuration files
-- Quotas may apply — avoid putting large data here
+  - avoid putting super large data here
 
 Example:
 
@@ -279,7 +284,7 @@ cd ~/   # HOME directory
 
 
 
-## 7.3 PROJECT Directory
+## 6.3 PROJECT Directory
 
 - Shared among project members
 - Designed for:
@@ -295,7 +300,7 @@ cd /projects/<project_id>/
 ```
 
 
-## 7.4 WORK Directory
+## 6.4 WORK Directory
 
 - High-performance **scratch space**
 - Designed for:
@@ -317,35 +322,6 @@ cd /work/<yourusername>/
 - Save large intermediate results only when necessary
 - Copy important output back to HOME/PROJECT at job end
 - Avoid storing large data in HOME
-
-
----
-
-# 8. Key SLURM Options
-
-| Option | Meaning |
-|---------|---------|
-| `--job-name` | Name of the job |
-| `--ntasks` | Number of tasks/processes |
-| `--cpus-per-task` | CPU cores per task |
-| `--time` | Max runtime |
-| `--mem` | Memory per node |
-| `--output` | File for stdout |
-
-
-## Requesting GPUs on Delta
-
-To request GPU resources:
-
-```bash
-#SBATCH --gpus=1           # request one GPU
-#SBATCH --gpus-per-task=1
-```
-
-
-
-## Time Limits and Priorities
-
 - Jobs must specify a **time limit**
 - If time expires, SLURM terminates the job
 - Larger requests may wait longer in queue

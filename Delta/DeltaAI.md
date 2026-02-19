@@ -325,3 +325,65 @@ cd /work/<yourusername>/
 - Jobs must specify a **time limit**
 - If time expires, SLURM terminates the job
 - Larger requests may wait longer in queue
+
+---
+
+# 7. SLURM Partitions
+
+If you do not specify them in your batch script, SLURM will assume a 30-minute wall-clock limit and 1 GB memory per CPU core. 
+| **Property**                | **Value**      |
+| --------------------------- | -------------- |
+| **Default Memory per core** | 1000 MB (1 GB) |
+| **Default Wall-clock time** | 30 minutes     |
+
+
+## 7.1 DeltaAI
+You can use ```sinfo -s``` to see which partitions are currently available.
+DeltaAI uses a smaller set of SLURM partitions - only 2:
+
+| **Partition/Queue** | **Node Type** | **Max Nodes per Job** | **Max Duration** | **Max Running in Queue/user** |
+| ------------------- | ------------- | --------------------- | ---------------- | ----------------------------- |
+| `ghx4*`             | GPU           | TBD                   | 48 hr            | TBD                           |
+| `ghx4-interactive`  | GPU           | 4                     | 2 hr             | TBD                           |
+
+When submitting a job script to DeltaAI, include the partition name like:
+```bash
+#SBATCH --partition=ghx4
+```
+
+## 7.2 Delta
+
+| **Partition/Queue**      | **Node Type** | **Max Nodes per job** | **Max Duration** | **Max Running in Queue/user** |
+| ------------------------ | ------------- | --------------------- | ---------------- | ----------------------------- |
+| `cpu`                    | CPU           | ALL                   | 48 hr            | TBD                           |
+| `cpu-interactive`        | CPU           | 4                     | 1 hr             | TBD                           |
+| `cpu-preempt`            | CPU           | ALL                   | 48 hr            | TBD                           |
+| `gpuA100x4*` *(default)* | quad-A100     | ALL                   | 48 hr            | TBD                           |
+| `gpuA100x4-interactive`  | quad-A100     | 4                     | 1 hr             | TBD                           |
+| `gpuA100x4-preempt`      | quad-A100     | ALL                   | 48 hr            | TBD                           |
+| `gpuA100x8`              | octa-A100     | ALL                   | 48 hr            | TBD                           |
+| `gpuA100x8-interactive`  | octa-A100     | 2                     | 1 hr             | TBD                           |
+| `gpuH200x8`              | octa-H200     | 1                     | 48 hr            | TBD                           |
+| `gpuH200x8-interactive`  | octa-H200     | 1                     | 1 hr             | TBD                           |
+| `gpuA40x4`               | quad-A40      | ALL                   | 48 hr            | TBD                           |
+| `gpuA40x4-interactive`   | quad-A40      | 4                     | 1 hr             | TBD                           |
+| `gpuA40x4-preempt`       | quad-A40      | ALL                   | 48 hr            | TBD                           |
+| `gpuMI100x8`             | octa-MI100    | ALL                   | 48 hr            | TBD                           |
+| `gpuMI100x8-interactive` | octa-MI100    | ALL                   | 1 hr             | TBD                           |
+
+
+- The ```gpuA100x4*``` partition is shown with an asterisk in the table and is the default submission queue if no partition is explicitly requested in your SLURM script.
+- Max Duration is the maximum wall-clock time allowed for jobs in that queue.
+- If you want to do a quick debugging, partitions with ```Max Duration = 1h``` are recommended. 
+
+```bash
+#SBATCH --partition=gpuH200x8
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=16G
+#SBATCH --time=01:00:00
+#SBATCH --pty bash
+```
+
+
+# 8. 

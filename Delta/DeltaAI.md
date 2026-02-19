@@ -384,6 +384,6 @@ When submitting a job script to DeltaAI, include the partition name like:
 #SBATCH --time=01:00:00
 #SBATCH --pty bash
 ```
+---
 
-
-# 8. 
+# 8. TBC
